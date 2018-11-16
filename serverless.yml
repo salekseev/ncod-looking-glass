@@ -11,21 +11,29 @@
 #
 # Happy Coding!
 
-service: ncod-looking-glass # NOTE: update this with your service name
+service: ncod-inspector 
 
 # lock us to a pre-2.0 (not yet released) version of the serverless framework to protect us from breaking changes
 frameworkVersion: ">=1.16.0 <2.0.0"
 
-app: ncod-looking-glass
+app: ncod-inspector
 tenant: salekseev
 
 provider:
   name: aws
   runtime: python3.6
+  stage: dev
+  region: eu-west-1
+  environment:
+    DYNAMODB_TABLE_TRANSACTIONS: transactions
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_TRANSACTIONS}*"
 
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -57,13 +65,21 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: looking-glass.hello
-    # add http GET trigger event
+  list:
+    handler: inspector/list.list
     events:
       - http:
-          path: test
+          path: list
           method: get
+          cors: true
+  
+  transactions:
+    handler: inspector/transactions.get
+    events:
+      - http:
+          path: transactions/{id}
+          method: get
+          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -95,8 +111,8 @@ functions:
 #          trigger: PreSignUp
 
 # Define function environment variables here
-environment:
-  TABLE_TRANSACTIONS: transactions
+  # environment:
+  #   TABLE_TRANSACTIONS: transactions
 
 # you can add CloudFormation resource templates here
 #resources:

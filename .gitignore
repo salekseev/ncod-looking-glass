@@ -20,4 +20,4 @@ var/
 .serverless
 
 .vscode
-
+.python-version

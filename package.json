@@ -1,0 +1,10 @@
+{
+    "name": "ncod-inspector",
+    "version": "1.0.0",
+    "description": "Serverless service exposing a REST HTTP interface",
+    "author": "Stas Alekseev <stas.alekseev@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "serverless-python-requirements": "^2.4.1"
+    }
+}

@@ -4,11 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"boto3" = "*"
+boto3 = "*"
+botocore = "*"
 
 [dev-packages]
-"autopep8" = "*"
+autopep8 = "*"
 pylint = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
